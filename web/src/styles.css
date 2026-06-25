@@ -1,0 +1,324 @@
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #0f1115;
+  color: #e8eaed;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.page h1 {
+  margin: 0;
+  font-size: clamp(24px, 5vw, 48px);
+}
+
+.page .tag {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #8b93a7;
+}
+
+.page .placeholder {
+  margin-top: 8px;
+  padding: 16px 24px;
+  border: 1px dashed #3a3f4b;
+  border-radius: 10px;
+  color: #9aa3b2;
+}
+
+.page .nav {
+  margin-top: 24px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.page .nav a { color: #7aa2ff; margin: 0 8px; }
+
+/* ---- 观众页：选项按钮 ---- */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 8px;
+}
+
+.option-btn {
+  padding: 16px 20px;
+  font-size: 18px;
+  color: #e8eaed;
+  background: #1b1f2a;
+  border: 1px solid #333a49;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+
+.option-btn:active { transform: scale(0.98); }
+.option-btn:hover { background: #232838; }
+.option-btn.voted { border-color: #7aa2ff; background: #243056; }
+.option-btn:disabled { opacity: 0.6; cursor: default; }
+
+.vote-hint { margin-top: 8px; color: #7aa2ff; font-size: 14px; }
+
+/* ---- 大屏页：柱状图 ---- */
+.page.screen { justify-content: flex-start; padding-top: 5vh; }
+.page.screen h1 { margin-bottom: 24px; }
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(16px, 5vw, 64px);
+  width: min(1100px, 92vw);
+  height: 52vh;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.bar-figure {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bar-percent {
+  font-size: clamp(18px, 2.4vw, 30px);
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #cdd6f4;
+}
+
+.bar {
+  width: 70%;
+  min-height: 4px;
+  background: linear-gradient(180deg, #7aa2ff, #4c63d2);
+  border-radius: 10px 10px 0 0;
+  transition: height 0.4s ease;
+}
+
+.bar-label {
+  margin-top: 14px;
+  font-size: clamp(16px, 2vw, 26px);
+  color: #e8eaed;
+}
+
+.bar-votes { font-size: clamp(13px, 1.4vw, 18px); color: #8b93a7; }
+
+.total { margin-top: 28px; color: #8b93a7; font-size: 15px; }
+
+/* ---- 观众页：留言输入 ---- */
+.msg-box {
+  width: 100%;
+  max-width: 360px;
+  margin-top: 28px;
+  padding: 16px;
+  background: #161a24;
+  border: 1px solid #2a3040;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.msg-title { font-size: 15px; color: #cdd6f4; margin-bottom: 10px; }
+
+.msg-input {
+  width: 100%;
+  resize: none;
+  padding: 10px 12px;
+  font-size: 16px;
+  color: #e8eaed;
+  background: #0f1115;
+  border: 1px solid #333a49;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.msg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.msg-count { font-size: 13px; color: #8b93a7; }
+
+.msg-send {
+  padding: 8px 22px;
+  font-size: 15px;
+  color: #fff;
+  background: #4c63d2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.msg-send:active { transform: scale(0.98); }
+
+.msg-error { margin-top: 8px; font-size: 13px; color: #ff8088; }
+.msg-ok { margin-top: 8px; font-size: 13px; color: #7aa2ff; }
+
+/* ---- 大屏页：弹幕 ---- */
+.danmaku-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.danmaku-item {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  font-size: clamp(22px, 3vw, 40px);
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  will-change: transform;
+  animation-name: danmaku-move;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes danmaku-move {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+/* ---- 主持人后台 ---- */
+.login-form { display: flex; gap: 8px; margin-top: 8px; }
+
+.page.admin {
+  justify-content: flex-start;
+  align-items: stretch;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.admin-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.admin-head-actions { display: flex; gap: 8px; }
+
+.admin-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+@media (max-width: 720px) { .admin-cols { grid-template-columns: 1fr; } }
+
+.admin-card {
+  background: #161a24;
+  border: 1px solid #2a3040;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.admin-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #cdd6f4;
+  margin-bottom: 12px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #7aa2ff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+}
+.link-btn:hover { text-decoration: underline; }
+
+.q-list { list-style: none; padding: 0; margin: 0 0 12px; }
+
+.q-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #2a3040;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.q-item.active { border-color: #4c63d2; background: #1a2138; }
+
+.q-text { font-size: 15px; color: #e8eaed; }
+.q-meta { color: #8b93a7; font-size: 13px; }
+.q-badge {
+  display: inline-block;
+  background: #4c63d2;
+  color: #fff;
+  font-size: 12px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  margin-right: 8px;
+}
+.q-actions { white-space: nowrap; }
+
+.editor { display: flex; flex-direction: column; gap: 8px; }
+.editor-label { font-size: 13px; color: #8b93a7; margin-top: 6px; }
+.opt-row { display: flex; align-items: center; gap: 6px; }
+.opt-row .msg-input { flex: 1; }
+.editor-warn { font-size: 13px; color: #ffb86c; }
+.editor-actions { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+
+/* ---- 大屏页：扫码二维码 ---- */
+.qr-panel {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 30; /* 高于弹幕层，保证可扫 */
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 14px 10px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.qr-caption {
+  margin-top: 8px;
+  color: #1b1f2a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.qr-url {
+  margin-top: 2px;
+  color: #5b6270;
+  font-size: 12px;
+  word-break: break-all;
+  max-width: 168px;
+}
